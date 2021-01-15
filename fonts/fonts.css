@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "seven_segment_classic";
+  src: url("DSEG7Classic-Bold.woff2") format("woff2"),
+    url("DSEG7Classic-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "seven_segment_modern";
+  src: url("DSEG7Modern-Bold.woff2") format("woff2"),
+    url("DSEG7Modern-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "fourteen_segment_modern";
+  src: url("DSEG14Modern-Bold.woff2") format("woff2"),
+    url("DSEG14Modern-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

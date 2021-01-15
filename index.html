@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="fonts\fonts.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+      crossorigin="anonymous"
+    />
+    <title>Pomodoro clock</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="session-nav">
+        <button id="po-btn" class="chosen-session">Pomodoro</button>
+        <button id="sb-btn">Short break</button>
+        <button id="lb-btn">Long break</button>
+      </div>
+      <div class="clock">
+        <div class="time">25</div>
+        <div class="time">:</div>
+        <div class="time">00</div>
+      </div>
+      <div class="clock-control">
+        <button class="control-btn">
+          <i class="fas fa-play"></i>
+        </button>
+        <!-- <button class="control-btn"><i class="fas fa-pause "></i></button> -->
+        <button class="control-btn">
+          <i class="fas fa-undo"></i>
+        </button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
