@@ -46,12 +46,12 @@ body {
 }
 
 .container {
-  height: 400px;
-  width: 500px;
+  height: 80vh;
+  width: 40vw;
   display: grid;
-  grid-template-rows: 15% 55% 30%;
-  border-bottom-left-radius: $btn-radius;
-  border-bottom-right-radius: $btn-radius;
+  grid-template-rows: 1fr 5fr 3fr 1fr;
+  // border-bottom-left-radius: $btn-radius;
+  // border-bottom-right-radius: $btn-radius;
 }
 
 .session-nav {
@@ -78,6 +78,10 @@ body {
   #lb-btn {
     background-color: $lb-color;
   }
+}
+
+.chosen-session {
+  border: 4px solid $primary !important;
 }
 
 .clock {
@@ -109,6 +113,18 @@ body {
   }
 }
 
-.chosen-session {
-  border: 4px solid $primary !important;
+.set-time {
+  @include flex-center();
+
+  * {
+    margin: 0 5px;
+    font-size: 2rem;
+  }
+
+  input {
+    width: 60px;
+    border: none;
+    color: inherit;
+    background-color: inherit;
+  }
 }
