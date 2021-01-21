@@ -111,6 +111,18 @@ body {
       border: none;
     }
   }
+
+  #play-btn {
+    display: block;
+  }
+
+  #pause-btn {
+    display: none;
+  }
+
+  // #reset-btn {
+  //   display: none;
+  // }
 }
 
 .set-time {

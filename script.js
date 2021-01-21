@@ -2,13 +2,18 @@ const pageTitle = document.querySelector("title");
 const poBtn = document.querySelector("#po-btn");
 const sbBtn = document.querySelector("#sb-btn");
 const lbBtn = document.querySelector("#lb-btn");
-const timeDisplay = document.querySelectorAll(".time");
+const clocks = document.querySelectorAll(".clock");
 const setTime = document.querySelector(".set-time");
-const inputField = document.querySelector(".set-time div input");
-const controlBtns = document.querySelectorAll(".control-btn");
+const inputFields = document.querySelectorAll(".set-time div input");
+const playBtn = document.querySelector("#play-btn");
+const pauseBtn = document.querySelector("#pause-btn");
+const resetBtn = document.querySelector("#reset-btn");
 
 const ringTone = new Audio("sounds/digital-alarm-clock.mp3");
+let chosenClock = clocks[0];
+let chosenIndex = [...clocks].indexOf(chosenClock);
 let countDownInterval;
+let sessionMarker = false;
 
 setTime.children[0].style.display = "block";
 setTime.children[1].style.display = "none";
@@ -18,7 +23,24 @@ poBtn.addEventListener("click", toggleSession);
 sbBtn.addEventListener("click", toggleSession);
 lbBtn.addEventListener("click", toggleSession);
 
-controlBtns[0].addEventListener("click", resetStart);
+playBtn.addEventListener("click", resetStart);
+pauseBtn.addEventListener("click", pauseCountDown);
+resetBtn.addEventListener("click", resetCountDown);
+inputFields[0].addEventListener("change", changeTime);
+inputFields[1].addEventListener("change", changeTime);
+inputFields[2].addEventListener("change", changeTime);
+
+
+clocks[0].style.display = "flex";
+clocks[1].style.display = "none";
+clocks[2].style.display = "none";
+
+clocks[0].children[0].innerHTML = `${inputFields[chosenIndex].value}`;
+clocks[0].children[2].innerHTML = "00";
+
+playBtn.style.display = "block";
+
+
 
 function toggleSession(e) {
     if(e.target === poBtn){
@@ -26,17 +48,37 @@ function toggleSession(e) {
         sbBtn.classList.remove("chosen-session");
         lbBtn.classList.remove("chosen-session");
         setTime.children[0].style.display = "block";
-        setTime.children[1].style.display = "none"
-        setTime.children[2].style.display = "none"
-        inputField.value = 25;
+        setTime.children[1].style.display = "none";
+        setTime.children[2].style.display = "none";
+
+        clocks[0].style.display = "flex";
+        clocks[1].style.display = "none";
+        clocks[2].style.display = "none";
+
+        chosenClock = clocks[0];
+        chosenIndex = [...clocks].indexOf(chosenClock);
+
+        clocks[0].children[0].innerHTML = `${inputFields[chosenIndex].value}`;
+        clocks[0].children[2].innerHTML = "00";
+
     } else if(e.target === sbBtn){
         e.target.classList.add("chosen-session");
         poBtn.classList.remove("chosen-session");
         lbBtn.classList.remove("chosen-session");
         setTime.children[0].style.display = "none";
         setTime.children[1].style.display = "block"
-        setTime.children[2].style.display = "none"
-        inputField.value = 5;
+        setTime.children[2].style.display = "none";
+
+        clocks[0].style.display = "none";
+        clocks[1].style.display = "flex";
+        clocks[2].style.display = "none";
+
+        chosenClock = clocks[1];
+        chosenIndex = [...clocks].indexOf(chosenClock);
+
+        clocks[1].children[0].innerHTML = `${inputFields[chosenIndex].value}`;
+        clocks[1].children[2].innerHTML = "00";
+
     } else if(e.target === lbBtn){
         e.target.classList.add("chosen-session");
         poBtn.classList.remove("chosen-session");
@@ -44,35 +86,69 @@ function toggleSession(e) {
         setTime.children[0].style.display = "none";
         setTime.children[1].style.display = "none"
         setTime.children[2].style.display = "block"
-        inputField.value = 15;
+
+        clocks[0].style.display = "none";
+        clocks[1].style.display = "none";
+        clocks[2].style.display = "flex";
+
+        chosenClock = clocks[2];
+        chosenIndex = [...clocks].indexOf(chosenClock);
+
+        clocks[2].children[0].innerHTML = `${inputFields[chosenIndex].value}`;
+        clocks[2].children[2].innerHTML = "00";
+
     }
 }
 
 function initCountDown() {
-    const sessionTime = parseInt(inputField.value);
+    toggleControlBtns();
+    const sessionIndex = chosenIndex;
+    sessionMinutes = parseInt(clocks[chosenIndex].children[0].textContent);
+    sessionSeconds = parseInt(clocks[chosenIndex].children[2].textContent);
     const startTime = new Date();
-    const endTime = new Date().setMinutes(startTime.getMinutes() + sessionTime);
+    const endTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), startTime.getHours(), startTime.getMinutes() + sessionMinutes, startTime.getSeconds() + sessionSeconds);
 
+    let m;
+    let s;
     countDownInterval = setInterval(countDown, 1000);
+    if (sessionIndex === chosenIndex) {
+        let timeDiff = endTime - startTime;
+        m = Math.floor(timeDiff / 1000 / 60);
+        s = Math.floor((timeDiff / 1000) % 60);
+
+        m = m < 10? "0" + m : m;
+        s = s < 10? "0" + s : s;
+
+        clocks[chosenIndex].children[0].innerHTML = m;
+        clocks[chosenIndex].children[2].innerHTML = s;
+    }
 
     function countDown() {
         const controlTime = new Date().getTime();
-        
+
         let timeDiff = endTime - controlTime;
-        let m = Math.floor(timeDiff / 1000 / 60);
-        let s = Math.floor((timeDiff / 1000) % 60);
+        m = Math.floor(timeDiff / 1000 / 60);
+        s = Math.floor((timeDiff / 1000) % 60);
     
         if(m === 0 && s === 0) {
             console.log("Countdown finished!");
             clearInterval(countDownInterval);
             ringTone.play();
         }
+        if(m != 0 && s != 0) {
+            sessionMarker = true;
+        } else {
+            sessionMarker = false;
+        }
             
         m = m < 10? "0" + m : m;
         s = s < 10? "0" + s : s;
     
-        timeDisplay[0].innerHTML = m;
-        timeDisplay[2].innerHTML = s;
+        if (sessionIndex === chosenIndex) {
+            clocks[chosenIndex].children[0].innerHTML = m;
+            clocks[chosenIndex].children[2].innerHTML = s;
+        }
+
         pageTitle.innerHTML = `${m}:${s} Pomodoro Clock`
     }
 }
@@ -84,4 +160,44 @@ function killCountDown() {
 function resetStart() {
     killCountDown();
     initCountDown();
+    console.log("resetStart()");
+}
+
+function changeTime() {
+    if(sessionMarker === false) {
+        console.log(sessionMarker);
+        console.log(chosenIndex);
+        clocks[chosenIndex].children[0].innerHTML = `${inputFields[chosenIndex].value}`
+        clocks[chosenIndex].children[2].innerHTML = "00";
+    } else {
+        console.log(sessionMarker);
+        return;
+    }
+}
+
+function toggleControlBtns() {
+    if(playBtn.style.display === "block") {
+        playBtn.style.display = "none";
+        pauseBtn.style.display = "block";
+        // resetBtn.style.display = "flex"
+
+    } else {
+        playBtn.style.display = "block";
+        pauseBtn.style.display = "none";
+        // resetBtn.style.display = "none"
+    }
+}
+
+function pauseCountDown() {
+    clearInterval(countDownInterval);
+    sessionMarker = false;
+    toggleControlBtns() 
+}
+
+function resetCountDown() {
+    console.log("resetCountDown");
+    if(sessionMarker === false) {
+        clocks[chosenIndex].children[0].innerHTML = `${inputFields[chosenIndex].value}`;
+        clocks[chosenIndex].children[2].innerHTML = "00";
+    }
 }

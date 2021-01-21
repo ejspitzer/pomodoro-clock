@@ -142,6 +142,14 @@ body {
   border: none;
 }
 
+.clock-control #play-btn {
+  display: block;
+}
+
+.clock-control #pause-btn {
+  display: none;
+}
+
 .set-time {
   display: -webkit-box;
   display: -ms-flexbox;
