@@ -108,20 +108,29 @@ function initCountDown() {
     const startTime = new Date();
     const endTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), startTime.getHours(), startTime.getMinutes() + sessionMinutes, startTime.getSeconds() + sessionSeconds);
 
+    
     let m;
     let s;
-    countDownInterval = setInterval(countDown, 1000);
-    if (sessionIndex === chosenIndex) {
-        let timeDiff = endTime - startTime;
-        m = Math.floor(timeDiff / 1000 / 60);
-        s = Math.floor((timeDiff / 1000) % 60);
+    
+    if(endTime - startTime > 0) {
+        countDownInterval = setInterval(countDown, 1000);
+        if (sessionIndex === chosenIndex) {
+            let timeDiff = endTime - startTime;
+            m = Math.floor(timeDiff / 1000 / 60);
+            s = Math.floor((timeDiff / 1000) % 60);
 
-        m = m < 10? "0" + m : m;
-        s = s < 10? "0" + s : s;
+            m = m < 10? "0" + m : m;
+            s = s < 10? "0" + s : s;
 
-        clocks[chosenIndex].children[0].innerHTML = m;
-        clocks[chosenIndex].children[2].innerHTML = s;
+            clocks[chosenIndex].children[0].innerHTML = m;
+            clocks[chosenIndex].children[2].innerHTML = s;
+        }
+    } else {
+        toggleControlBtns();
     }
+
+    
+    
 
     function countDown() {
         const controlTime = new Date().getTime();
@@ -134,13 +143,14 @@ function initCountDown() {
             console.log("Countdown finished!");
             clearInterval(countDownInterval);
             ringTone.play();
+            toggleControlBtns();
         }
         if(m != 0 && s != 0) {
             sessionMarker = true;
         } else {
             sessionMarker = false;
         }
-            
+
         m = m < 10? "0" + m : m;
         s = s < 10? "0" + s : s;
     
@@ -165,7 +175,6 @@ function resetStart() {
 
 function changeTime() {
     if(sessionMarker === false) {
-        console.log(sessionMarker);
         console.log(chosenIndex);
         clocks[chosenIndex].children[0].innerHTML = `${inputFields[chosenIndex].value}`
         clocks[chosenIndex].children[2].innerHTML = "00";
